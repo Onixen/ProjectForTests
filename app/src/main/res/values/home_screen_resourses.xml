@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_screen_app_bar_title">Todos</string>
+
+    <string name="home_screen_menu_settings">Настройки</string>
+
+    <string name="recycler_item_placeholder_name">Имя Фамилия</string>
+    <string name="recycler_item_placeholder_job">Задача, которую нужно выполнить</string>
+</resources>
