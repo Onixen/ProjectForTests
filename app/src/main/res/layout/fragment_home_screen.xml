@@ -17,7 +17,7 @@
             app:title="@string/home_screen_app_bar_title"
             app:menu="@menu/home_screen_menu"
             app:titleCentered="true"
-            app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Headline4"/>
+            app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Headline4" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

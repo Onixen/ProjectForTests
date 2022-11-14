@@ -32,6 +32,8 @@ class HomeScreen: Fragment(R.layout.fragment_home_screen) {
 
         uiSettings()
         lifecycleScope.launch(Dispatchers.Main) {
+            binding.jobsList.adapter = HomeScreenRecyclerAdapter(null)
+            delay(3000)
             val data = fetchData()
             val cookedData = prepareDataForRecyclerAdapter(data)
             binding.jobsList.adapter = HomeScreenRecyclerAdapter(cookedData)
@@ -43,7 +45,6 @@ class HomeScreen: Fragment(R.layout.fragment_home_screen) {
     }
     private suspend fun fetchData() :  MutableList<ToDo> = coroutineScope {
         val response = withContext(Dispatchers.IO) {
-            delay(2000)
             URL("https://jsonplaceholder.typicode.com/todos").readText()
         }
         val itemsList = withContext(Dispatchers.Default) {

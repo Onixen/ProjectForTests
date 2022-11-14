@@ -7,5 +7,6 @@
         android:title="@string/home_screen_menu_settings"
         android:icon="@drawable/ic_baseline_settings_24"
         android:contentDescription="@string/home_screen_menu_settings"
-        app:showAsAction="always"/>
+        app:showAsAction="always"
+        app:iconTint="?attr/colorOnSurfaceVariant"/>
 </menu>
