@@ -12,10 +12,12 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@string/home_screen_app_bar_title"
-            app:menu="@menu/home_screen_menu"
+            app:menu="@menu/home_screen_popup_menu"
+            app:popupTheme="?attr/popupMenuStyle"
             app:titleCentered="true"
             app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Headline4" />
 

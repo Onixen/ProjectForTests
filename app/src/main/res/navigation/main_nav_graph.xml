@@ -9,5 +9,16 @@
         android:id="@+id/homeScreen"
         android:name="com.e.projectfortests.ui.HomeScreen"
         android:label="fragment_home_screen"
-        tools:layout="@layout/fragment_home_screen" />
+        tools:layout="@layout/fragment_home_screen" >
+        <action
+            android:id="@+id/action_homeScreen_to_settings2"
+            app:destination="@id/settings2"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/settings2"
+        android:name="com.e.projectfortests.ui.Settings"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

@@ -2,25 +2,31 @@ package com.e.projectfortests.ui
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.annotation.MenuRes
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.e.projectfortests.R
 import com.e.projectfortests.databinding.FragmentHomeScreenBinding
 import com.e.projectfortests.model.HomeScreenRecyclerItem
 import com.e.projectfortests.model.ToDo
 import com.e.projectfortests.model.User
 import com.e.projectfortests.ui.adapters.HomeScreenRecyclerAdapter
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.URL
 
 class HomeScreen: Fragment(R.layout.fragment_home_screen) {
-    lateinit var binding: FragmentHomeScreenBinding
+    private lateinit var binding: FragmentHomeScreenBinding
+    private var loadingData:  List<HomeScreenRecyclerItem>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHomeScreenBinding.inflate(inflater, container, false)
@@ -32,16 +38,28 @@ class HomeScreen: Fragment(R.layout.fragment_home_screen) {
 
         uiSettings()
         lifecycleScope.launch(Dispatchers.Main) {
-            binding.jobsList.adapter = HomeScreenRecyclerAdapter(null)
-            delay(3000)
-            val data = fetchData()
-            val cookedData = prepareDataForRecyclerAdapter(data)
-            binding.jobsList.adapter = HomeScreenRecyclerAdapter(cookedData)
+            if (loadingData == null) {
+                binding.jobsList.adapter = HomeScreenRecyclerAdapter(null)
+                val data = fetchData()
+                val cookedData = prepareDataForRecyclerAdapter(data)
+                loadingData = cookedData
+                binding.jobsList.adapter = HomeScreenRecyclerAdapter(cookedData)
+            } else {
+                binding.jobsList.adapter = HomeScreenRecyclerAdapter(loadingData)
+            }
         }
     }
 
     private fun uiSettings() {
-
+        binding.toolbar.setOnMenuItemClickListener {
+            when(it.itemId) {
+                R.id.settings -> {
+                    findNavController().navigate(R.id.action_homeScreen_to_settings2)
+                    true
+                }
+                else -> true
+            }
+        }
     }
     private suspend fun fetchData() :  MutableList<ToDo> = coroutineScope {
         val response = withContext(Dispatchers.IO) {
