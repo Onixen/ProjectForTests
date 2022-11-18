@@ -4,6 +4,7 @@
     <item
         android:title="Меню"
         android:icon="@drawable/ic_baseline_more_vert_24"
+        app:iconTint="?attr/colorOnSurface"
         app:showAsAction="always">
         <menu>
             <item

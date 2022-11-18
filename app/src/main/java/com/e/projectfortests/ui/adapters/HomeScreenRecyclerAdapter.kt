@@ -36,6 +36,6 @@ class HomeScreenRecyclerAdapter(private val list: List<HomeScreenRecyclerItem>?)
     }
 
     override fun getItemCount(): Int {
-        return list?.size ?: 13
+        return list?.size ?: 1
     }
 }

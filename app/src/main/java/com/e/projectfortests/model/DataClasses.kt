@@ -1,5 +1,6 @@
 package com.e.projectfortests.model
 
+class TODOs: ArrayList<ToDo>()
 data class ToDo(
     val userId: Int,
     val id: Int,

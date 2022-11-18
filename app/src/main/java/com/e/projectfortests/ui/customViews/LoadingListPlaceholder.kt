@@ -1,10 +1,8 @@
 package com.e.projectfortests.ui.customViews
 
 import android.animation.ArgbEvaluator
-import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
-import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -12,9 +10,9 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
-import android.view.animation.LinearInterpolator
-import androidx.core.graphics.alpha
 import com.e.projectfortests.R
+import kotlin.math.ceil
+import kotlin.math.roundToInt
 
 
 class LoadingListPlaceholder @JvmOverloads constructor(
@@ -24,13 +22,16 @@ class LoadingListPlaceholder @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttrs) {
     private var placeholderColorPrimary: Int = DEFAULT_PRIMARY_COLOR
     private var placeholderColorSecondary: Int = DEFAULT_SECONDARY_COLOR
+
     private val backgroundPaint = Paint()
     private val foregroundPaint = Paint()
-    private val backgroundRect = Rect()
-    private val leftRect = Rect()
-    private val nameRect = Rect()
-    private val jobRect = Rect()
-    private lateinit var foregroundColorAnimator: ObjectAnimator
+
+    private var itemsCount: Int = 0
+
+    private var backgroundRect: MutableList<Rect> = mutableListOf()
+    private var leftRect: MutableList<Rect> = mutableListOf()
+    private var nameRect: MutableList<Rect> = mutableListOf()
+    private var jobRect: MutableList<Rect> = mutableListOf()
 
     init {
         if (attrs != null) {
@@ -53,10 +54,14 @@ class LoadingListPlaceholder @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        canvas?.drawRect(backgroundRect, backgroundPaint)
-        canvas?.drawRect(leftRect, foregroundPaint)
-        canvas?.drawRect(nameRect, foregroundPaint)
-        canvas?.drawRect(jobRect, foregroundPaint)
+
+        for(position in 0 until itemsCount) {
+            canvas?.drawRect(backgroundRect[position], backgroundPaint)
+            canvas?.drawRect(leftRect[position], foregroundPaint)
+            canvas?.drawRect(nameRect[position], foregroundPaint)
+            canvas?.drawRect(jobRect[position], foregroundPaint)
+        }
+
         invalidate()
     }
 
@@ -94,25 +99,45 @@ class LoadingListPlaceholder @JvmOverloads constructor(
         foregroundColorAnimator.repeatMode = ValueAnimator.RESTART;
         foregroundColorAnimator.start()*/
 
+        content()
+    }
 
-        backgroundRect.set(0, 0, width, height)
+    private fun content() {
+        var offset = 0
+        val dpInPx = context.dpToPx(80).roundToInt()
+        itemsCount = ceil(height / dpInPx.toDouble()).toInt()
+        for (position in 0..itemsCount) {
+            createPlaceholderItem(offset)
+            offset += 80
+        }
+    }
+    private fun createPlaceholderItem(offset: Int) {
+        backgroundRect.add(Rect(0, context.dpToPx(offset).toInt(), width, context.dpToPx(offset).toInt()))
 
-        var p1 = context.dpToPx(30).toInt()
-        var p2 = context.dpToPx(30).toInt()
-        var p3 = p1 + context.dpToPx(18).toInt()
-        var p4 = p2 + context.dpToPx(18).toInt()
-        leftRect.set(p1, p2, p3, p4)
+        Log.d("placeholder", "[backgroundRect] top left Point: x=0, y=${context.dpToPx(offset)};")
 
-        p1 += context.dpToPx(44).toInt()
-        p2 = context.dpToPx(20).toInt()
-        p3 = p1 + width / 2
-        p4 = p2 + context.dpToPx(16).toInt()
-        nameRect.set(p1, p2, p3, p4)
+        var xTopLeft = context.dpToPx(30).toInt()
+        var yTopLeft = context.dpToPx(30 + offset).toInt()
+        var xBottomRight = xTopLeft + context.dpToPx(18).toInt()
+        var yBottomRight = yTopLeft + context.dpToPx(18).toInt()
+        leftRect.add(Rect(xTopLeft, yTopLeft, xBottomRight, yBottomRight))
 
-        p2 = p4 + context.dpToPx(2).toInt()
-        p3 = p1 + width - ( context.dpToPx(20).toInt() + p1 )
-        p4 = p2 + context.dpToPx(16).toInt()
-        jobRect.set(p1, p2, p3, p4)
+        Log.d("placeholder", "[leftRect] top left Point: x=$xTopLeft, y=$yTopLeft;")
+
+        xTopLeft += context.dpToPx(44).toInt()
+        yTopLeft = context.dpToPx(20 + offset).toInt()
+        xBottomRight = xTopLeft + width / 2
+        yBottomRight = yTopLeft + context.dpToPx(16).toInt()
+        nameRect.add(Rect(xTopLeft, yTopLeft, xBottomRight, yBottomRight))
+
+        Log.d("placeholder", "[nameRect] top left Point: x=$xTopLeft, y=$yTopLeft;")
+
+        yTopLeft = yBottomRight + context.dpToPx(2).toInt()
+        xBottomRight = xTopLeft + width - ( context.dpToPx(20).toInt() + xTopLeft )
+        yBottomRight = yTopLeft + context.dpToPx(16).toInt()
+        jobRect.add(Rect(xTopLeft, yTopLeft, xBottomRight, yBottomRight))
+
+        Log.d("placeholder", "[jobRect] top left Point: x=$xTopLeft, y=$yTopLeft;")
     }
 
     companion object {

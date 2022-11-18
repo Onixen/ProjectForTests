@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="20dp">
 
     <com.e.projectfortests.ui.customViews.LoadingListPlaceholder
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="match_parent"
         app:secondary_color="?attr/colorSurface"
-        app:primary_color="?attr/colorPrimary"/>
+        app:primary_color="?attr/colorPrimary" />
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"

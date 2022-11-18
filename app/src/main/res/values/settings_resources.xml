@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="display_and_colors">Дисплей и цвета</string>
+    <string name="adaptive_colors_desc">Использовать адаптивную цветовую схему для приложения</string>
+    <string name="adaptive_colors_desc_clarification">(Начиная с android 12)</string>
+    <string name="night_theme_desc">Ночная тема</string>
+    <string name="night_theme_desc_clarification">(По умолчанию используется системная)</string>
+</resources>
